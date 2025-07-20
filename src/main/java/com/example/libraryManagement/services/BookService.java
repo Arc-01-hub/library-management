@@ -18,12 +18,29 @@ public class BookService {
     }
 
     //GET ALL BOOKS
-
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
     }
     //GET ONE BOOK BY ID
     public Optional<Book> getOneBook(Long id){
         return bookRepository.findById(id);
+    }
+    // DELETE A BOOK
+    public void deleteBook(Long id){
+        bookRepository.deleteById(id);
+    }
+    // CREATE A BOOK
+    public void createBook(Book book){
+        bookRepository.save(book);
+    }
+    // UPDATE A BOOK
+    public Book updateBook(Long id, Book newBook){ 
+        return bookRepository.findById(id)
+            .map( book->{
+                book.setBookName(newBook.getBookName());
+                book.setAuther(newBook.getAuther());
+                return bookRepository.save(book);
+            })                .orElseThrow(() -> new RuntimeException("Book not found"));
+
     }
 }
